@@ -1,9 +1,26 @@
-def calculate_returns(df):
-    df["market_return"] = df["Close"].pct_change()
+import numpy as np
 
-    df["strategy_return"] = df["signal"].shift(1) * df["market_return"]
+def final_return(df):
+    return df["strategy_value"].iloc[-1] - 1
 
-    df["market_value"] = (1 + df["market_return"]).cumprod()
-    df["strategy_value"] = (1 + df["strategy_return"]).cumprod()
+def sharpe_ratio(df):
+    returns = df["strategy_return"].dropna()
 
-    return df
+    if returns.std() == 0:
+        return 0
+
+    return np.sqrt(252) * returns.mean() / returns.std()
+
+def max_drawdown(df):
+    running_max = df["strategy_value"].cummax()
+    drawdown = df["strategy_value"] / running_max - 1
+    return drawdown.min()
+
+def number_of_trades(df):
+    return df["trade"].sum()
+
+def print_metrics(df):
+    print("Final Return:", round(final_return(df) * 100, 2), "%")
+    print("Sharpe Ratio:", round(sharpe_ratio(df), 2))
+    print("Max Drawdown:", round(max_drawdown(df) * 100, 2), "%")
+    print("Number of Trades:", int(number_of_trades(df)))

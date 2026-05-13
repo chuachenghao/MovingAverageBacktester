@@ -1,18 +1,16 @@
 # MovingAverageBacktester
-Simple Python stock backtester
+interactive Python backtesting dashboard for testing moving average trading strategies using Yahoo Finance data.
 
 ## Features
 
-- Loads historical price data
-- Calculates moving averages
-- Generates buy/sell signals
-- Compares strategy performance against buy-and-hold
-- Plots portfolio performance
+- Download real stock data using `yfinance`
+- Test moving average crossover strategies
+- Compare strategy performance against buy-and-hold
+- Interactive Streamlit dashboard
 
-## Skills Demonstrated
+## How to Run
 
-- Python
-- pandas
-- financial returns
-- backtesting
-- data visualization
+Install dependencies:
+
+pip3 install -r requirements.txt
+streamlit run app.py

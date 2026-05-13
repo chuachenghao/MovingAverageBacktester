@@ -1,26 +1,23 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import yfinance as yf
-
+from data_loader import load_data
 from strategy import add_moving_averages, generate_signals
-from metrics import calculate_returns
+from backtester import run_backtest
+from metrics import print_metrics
+from plot import plot_results
 
 ticker = "U11.SI"
+start = "2020-01-01"
+end = "2026-01-01"
+short_window = 20
+long_window = 50
+transaction_cost = 0.001
 
-df = yf.download(ticker, start="2020-01-01", end="2026-01-01")
+df = load_data(ticker, start, end)
 
-df = df.reset_index()
-
-df = add_moving_averages(df, short_window = 20, long_window = 50)
+df = add_moving_averages(df, short_window, long_window)
 df = generate_signals(df)
-df = calculate_returns(df)
+df = run_backtest(df, transaction_cost)
 
 print(df.tail())
+print_metrics(df)
 
-plt.plot(df["Date"], df["market_value"], label="Buy and Hold")
-plt.plot(df["Date"], df["strategy_value"], label="Moving Average Strategy")
-plt.legend()
-plt.title(f"{ticker} Backtest Results")
-plt.xlabel("Date")
-plt.ylabel("Portfolio Value")
-plt.show()
+plot_results(df, ticker)
