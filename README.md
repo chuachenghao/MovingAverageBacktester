@@ -12,5 +12,5 @@ interactive Python backtesting dashboard for testing moving average trading stra
 
 Install dependencies:
 
-pip3 install -r requirements.txt
+pip3 install -r requirements.txt <br><br>
 streamlit run app.py
